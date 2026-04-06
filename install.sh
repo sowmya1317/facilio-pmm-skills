@@ -8,6 +8,15 @@ BASE_URL="https://raw.githubusercontent.com/$REPO/$BRANCH"
 CLAUDE_DIR="$HOME/.claude"
 COMMANDS_DIR="$CLAUDE_DIR/commands"
 
+# Capture token from environment or prompt
+if [ -z "$GITHUB_TOKEN" ]; then
+  echo ""
+  echo "Enter your GitHub Personal Access Token:"
+  read -s GITHUB_TOKEN
+fi
+
+AUTH_HEADER="Authorization: token $GITHUB_TOKEN"
+
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "  Facilio PMM Skills — Claude Code Setup"
@@ -20,15 +29,15 @@ mkdir -p "$COMMANDS_DIR/pmm-ai"
 mkdir -p "$COMMANDS_DIR/pmm-design"
 
 echo "→ Downloading PMM skills..."
-curl -fsSL "$BASE_URL/pmm/skills.md" -o "$COMMANDS_DIR/pmm/skills.md"
+curl -fsSL -H "$AUTH_HEADER" "$BASE_URL/pmm/skills.md" -o "$COMMANDS_DIR/pmm/skills.md"
 echo "  ✓ pmm/skills.md"
 
 echo "→ Downloading AI skills..."
-curl -fsSL "$BASE_URL/pmm-ai/skills.md" -o "$COMMANDS_DIR/pmm-ai/skills.md"
+curl -fsSL -H "$AUTH_HEADER" "$BASE_URL/pmm-ai/skills.md" -o "$COMMANDS_DIR/pmm-ai/skills.md"
 echo "  ✓ pmm-ai/skills.md"
 
 echo "→ Downloading Design skills..."
-curl -fsSL "$BASE_URL/pmm-design/skills.md" -o "$COMMANDS_DIR/pmm-design/skills.md"
+curl -fsSL -H "$AUTH_HEADER" "$BASE_URL/pmm-design/skills.md" -o "$COMMANDS_DIR/pmm-design/skills.md"
 echo "  ✓ pmm-design/skills.md"
 
 # Write CLAUDE.md with global instructions
